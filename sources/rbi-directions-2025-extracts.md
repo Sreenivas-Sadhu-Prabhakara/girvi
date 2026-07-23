@@ -21,7 +21,7 @@ extract, not a substitute for the official document.
 ## Para 15 — bullet tenor
 
 > "Tenor of consumption loans in the nature of bullet repayment loans shall be
-> capped at 12 months."
+> capped at 12 months, which may be renewed."
 
 ## Para 16 — aggregate collateral limits
 

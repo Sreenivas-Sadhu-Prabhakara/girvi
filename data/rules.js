@@ -53,8 +53,8 @@ var GIRVI_RULES = (function () {
     },
     {
       id: 'bullet-tenor-12m', category: 'bullet', clause: 'Para 15',
-      statement: 'Consumption loans with bullet repayment are capped at a 12-month tenor.',
-      quote: 'Tenor of consumption loans in the nature of bullet repayment loans shall be capped at 12 months.',
+      statement: 'Consumption loans with bullet repayment are capped at a 12-month tenor (renewal is permitted by the clause; renewal math is out of girvi’s scope).',
+      quote: 'Tenor of consumption loans in the nature of bullet repayment loans shall be capped at 12 months, which may be renewed.',
       source_name: RBI_DOC, source_url: RBI_URL, verified_on: VERIFIED, confidence: 'verified'
     },
     {

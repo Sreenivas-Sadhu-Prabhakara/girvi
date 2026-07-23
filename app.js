@@ -135,8 +135,11 @@
   }
 
   function gaugeX(valuePaise) {
-    // step x-origins 10/112/214, width 98 — position within the value band
-    const b1 = 31250000, b2 = 66666700; // paise ≈ plateau exits
+    // step x-origins 10/112/214, width 98 — position within the value band.
+    // Band edges are the plateau-exit values, derived from the corpus tiers
+    // (never re-typed): V where floor(V × nextCap) first exceeds the band top.
+    const b1 = R.TIERS[0].maxLoanPaise * 100 / R.TIERS[1].capPct;
+    const b2 = R.TIERS[1].maxLoanPaise * 100 / R.TIERS[2].capPct;
     let i, f;
     if (valuePaise <= b1) { i = 0; f = valuePaise / b1; }
     else if (valuePaise <= b2) { i = 1; f = (valuePaise - b1) / (b2 - b1); }
@@ -239,7 +242,8 @@
     const out = $('marginOut');
     const fill = $('mmFill');
     const marker = $('mmMarker');
-    const L = num(state.loan) || (m.info ? m.info.ceilingPaise / 100 : 0);
+    const typedLoan = num(state.loan);
+    const L = typedLoan || (m.info ? m.info.ceilingPaise / 100 : 0);
     if (!m.info || !L) {
       out.textContent = 'Enter a pledge, rate and loan amount to see headroom.';
       fill.setAttribute('width', '0');
@@ -249,10 +253,18 @@
     const drop = E.marginCallDropPct(L, m.totValuePaise / 100);
     const cap = E.tierCapPctForLoan(Math.round(L * 100));
     if (drop === null) { out.textContent = '—'; return null; }
-    if (drop <= 0) {
+    if (drop < 0) {
       fill.setAttribute('width', '0');
       marker.hidden = true;
       out.textContent = 'A loan of ' + fmtR(L) + ' is already above the ' + cap + '% cap at today’s value — no headroom (Para 20).';
+      return drop;
+    }
+    if (drop === 0) {
+      fill.setAttribute('width', '0');
+      marker.hidden = true;
+      out.textContent = 'A loan of ' + fmtR(L) +
+        (typedLoan ? '' : ' (your ceiling — no loan amount typed in step 4, so the maximum is assumed)') +
+        ' sits exactly at the ' + cap + '% cap — zero headroom: any fall in the reference price breaches the cap that must hold throughout the tenor (Para 20).';
       return drop;
     }
     const w = Math.min(drop, 40) / 40 * 620;
@@ -267,7 +279,9 @@
     const b = document.createElement('strong');
     b.textContent = drop.toFixed(2) + '%';
     const s2 = document.createElement('span');
-    s2.textContent = ', a loan of ' + fmtR(L) + ' breaches the ' + cap + '% cap that must hold throughout the tenor (Para 20) — the lender can then demand top-up collateral or part-payment.';
+    s2.textContent = ', a loan of ' + fmtR(L) +
+      (typedLoan ? '' : ' (your ceiling — no loan amount typed in step 4, so the maximum is assumed)') +
+      ' breaches the ' + cap + '% cap that must hold throughout the tenor (Para 20) — the lender can then demand top-up collateral or part-payment.';
     out.append(s1, b, s2);
     return drop;
   }
