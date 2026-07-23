@@ -1,0 +1,24 @@
+{
+  "name": "girvi — gold loan calculator (RBI tiered LTV)",
+  "short_name": "girvi",
+  "description": "Your maximum lawful gold loan under RBI's tiered 85/80/75% LTV caps (2025 Directions), bullet vs EMI true cost, and margin-call headroom — clause-cited, fully offline.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0E0D12",
+  "theme_color": "#0E0D12",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
